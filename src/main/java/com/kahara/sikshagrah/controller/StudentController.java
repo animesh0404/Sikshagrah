@@ -1,11 +1,11 @@
 package com.kahara.sikshagrah.controller;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +18,7 @@ import com.kahara.sikshagrah.model.Student;
 import com.kahara.sikshagrah.repo.StudentRepo;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class StudentController {
 
 	@Autowired
@@ -28,9 +29,9 @@ public class StudentController {
 		return studentRepo.findAll();
 	}
 
-	@GetMapping("/student/{ID}")
-	Student getStudentById(@PathVariable("ID") Long id) {
-		return studentRepo.findById(id).get();
+	@GetMapping("/student/{roll}")
+	Student getStudentById(@PathVariable("roll") Long roll) {
+		return studentRepo.findById(roll).get();
 	}
 
 	@PostMapping("/student")
@@ -40,8 +41,8 @@ public class StudentController {
 
 	@PutMapping("/student")
 	Student updateStudent(@RequestBody Student updatedStudent) {
-		Long id = updatedStudent.getId();
-		Optional<Student> existingStudent = studentRepo.findById(id);
+		Long roll = updatedStudent.getRoll();
+		Optional<Student> existingStudent = studentRepo.findById(roll);
 		Student temp = null;
 		if (existingStudent.isPresent()) {
 			temp = existingStudent.get();
@@ -51,9 +52,9 @@ public class StudentController {
 		return temp;
 	}
 
-	@DeleteMapping("/student/{ID}")
-	String deleteStudent(@PathVariable("ID") Long id) {
-		studentRepo.deleteById(id);
-		return "Student with id " + id + " deleted.";
+	@DeleteMapping("/student/{roll}")
+	String deleteStudent(@PathVariable("roll") Long roll) {
+		studentRepo.deleteById(roll);
+		return "Student with roll no " + roll + " deleted.";
 	}
 }
