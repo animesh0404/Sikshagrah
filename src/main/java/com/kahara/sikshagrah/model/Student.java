@@ -3,43 +3,42 @@ package com.kahara.sikshagrah.model;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.kahara.sikshagrah.enums.Gender;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Student {
 
 	@Id
-	@GeneratedValue
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_roll_seq")
+	private Long roll;
 	private String fname;
 	private String lname;
 	private String email;
-	private String roll;
-	
-	@JsonFormat(pattern = "dd-MM-yyyy")
+
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dob;
 
 	public Student() {
+		super();
 	}
 
-	public Student(Long id, String fname, String lname, String email, String roll, LocalDate dob) {
-		this.id = id;
+	public Student(String fname, String lname, String email, Long roll, Gender gender, LocalDate dob) {
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
 		this.roll = roll;
+		this.gender = gender;
 		this.dob = dob;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getFname() {
@@ -66,12 +65,20 @@ public class Student {
 		this.email = email;
 	}
 
-	public String getRoll() {
+	public Long getRoll() {
 		return roll;
 	}
 
-	public void setRoll(String roll) {
+	public void setRoll(Long roll) {
 		this.roll = roll;
+	}
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
 	}
 
 	public LocalDate getDob() {
@@ -84,7 +91,8 @@ public class Student {
 
 	@Override
 	public String toString() {
-		return "Student [id=" + id + ", fname=" + fname + ", lname=" + lname + ", email=" + email + ", roll=" + roll
-				+ ", dob=" + dob + "]";
+		return "Student [roll=" + roll + ", fname=" + fname + ", lname=" + lname + ", email=" + email + ", gender="
+				+ gender + ", dob=" + dob + "]";
 	}
+
 }
