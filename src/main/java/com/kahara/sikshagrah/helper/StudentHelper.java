@@ -9,23 +9,27 @@ import com.kahara.sikshagrah.model.Student;
 
 public abstract class StudentHelper {
 
-	StudentDto entityToDto(Student student) {
+	private StudentHelper() {
+		throw new IllegalStateException("Cannot instantiate as it's a Helper class");
+	}
+
+	public static StudentDto entityToDto(Student student) {
 		StudentDto studentDto = new StudentDto();
 		BeanUtils.copyProperties(student, studentDto);
 		return studentDto;
 	}
 
-	List<StudentDto> entityToDto(List<Student> students) {
-		return students.stream().map(this::entityToDto).toList();
+	public static List<StudentDto> entityToDto(List<Student> students) {
+		return students.stream().map(s -> entityToDto(s)).toList();
 	}
 
-	Student dtoToEntity(StudentDto studentDto) {
+	public static Student dtoToEntity(StudentDto studentDto) {
 		Student student = new Student();
 		BeanUtils.copyProperties(studentDto, student);
 		return student;
 	}
 
-	List<Student> dtoToEntity(List<StudentDto> studentDtos) {
-		return studentDtos.stream().map(this::dtoToEntity).toList();
+	public static List<Student> dtoToEntity(List<StudentDto> studentDtos) {
+		return studentDtos.stream().map(s -> dtoToEntity(s)).toList();
 	}
 }
